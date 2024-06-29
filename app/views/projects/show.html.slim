@@ -1,2 +1,36 @@
-h1 Projects#show
-p Find me in app/views/projects/show.html.slim
+div.flex.justify-between.items-center.mb-4
+  h1.text-2xl.font-bold
+    | Homey Project: 
+    = @project.title
+  = link_to 'Back to Projects', projects_path, class: "inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded"
+
+h2.text-xl.font-semibold.mb-2 Conversation History
+- @comments.each do |comment|
+  p.mb-2
+    span.bg-blue-200.text-blue-800.px-2.py-1.rounded Comment
+    strong.text-blue-500= " by #{comment.user.full_name}:"
+    |  #{comment.content} on 
+    em.text-gray-500= comment.created_at.strftime("%b %d, %Y %l:%M %p")
+
+- if @project.previous_status
+  p.mb-2
+    span.bg-green-200.text-green-800.px-2.py-1.rounded Status
+    strong.text-green-500= " changed by #{current_user.full_name}:"
+    |  from #{Project.statuses.key(@project.previous_status)} to #{@project.status.humanize} on 
+    em.text-gray-500= @project.updated_at.strftime("%b %d, %Y %l:%M %p")
+
+.form-container.mt-4
+  = form_with(model: @project, url: project_path(@project), method: :patch) do |form|
+    .mb-4
+      = form.label :status, class: "block text-sm font-medium text-gray-700"
+      = form.select :status, Project.statuses.keys.map { |status| [status.humanize, status] }, {}, class: "mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
+    .actions
+      = form.submit 'Update Status', class: "inline-flex items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold text-white"
+
+.form-container.mt-4
+  = form_with(model: [@project, @project.comments.new]) do |form|
+    .mb-4
+      = form.label :content, class: "block text-sm font-medium text-gray-700"
+      = form.text_area :content, class: "mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
+    .actions
+      = form.submit 'Add Comment', class: "inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-white"

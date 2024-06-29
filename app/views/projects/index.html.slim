@@ -1,2 +1,11 @@
-h1 Projects#index
-p Find me in app/views/projects/index.html.slim
+h1.text-3xl.font-bold.mb-4 Projects
+
+= link_to 'New Project', new_project_path, class: "inline-flex items-center px-4 py-2 bg-green-500 hover:bg-green-700 text-white font-bold rounded mb-4"
+
+- @projects.each do |project|
+  .mb-4
+    h2.text-2xl.font-bold
+      = link_to project.title, project_path(project), class: "text-blue-500 hover:text-blue-700"
+    p
+      | Status: 
+      strong= project.status.humanize
