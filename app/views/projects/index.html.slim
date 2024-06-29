@@ -1,11 +1,10 @@
-h1.text-3xl.font-bold.mb-4 Projects
+div.flex.justify-between.items-center.mb-4
+  h1.text-3xl.font-bold Projects
+  = link_to 'New Project', new_project_path, class: "inline-flex items-center px-4 py-2 bg-green-500 hover:bg-green-700 text-white font-bold rounded mb-4"
 
-= link_to 'New Project', new_project_path, class: "inline-flex items-center px-4 py-2 bg-green-500 hover:bg-green-700 text-white font-bold rounded mb-4"
-
-- @projects.each do |project|
-  .mb-4
-    h2.text-2xl.font-bold
-      = link_to project.title, project_path(project), class: "text-blue-500 hover:text-blue-700"
-    p
-      | Status: 
-      strong= project.status.humanize
+div.flex.justify-between.items-start
+  div.flex.flex-col.w-3/4
+    - @projects.each do |project|
+      = link_to project_path(project), class: "block mb-4 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition duration-300"
+        h2.text-xl.font-semibold.text-blue-500= project.title
+        p Status: #{project.status.humanize}

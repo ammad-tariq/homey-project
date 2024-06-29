@@ -1,0 +1,13 @@
+h1.text-3xl.font-bold.mb-4 New Project
+
+= form_with(model: @project, local: true) do |form|
+  .mb-4
+    = form.label :title, class: "block text-sm font-medium text-gray-700"
+    = form.text_field :title, class: "mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
+
+  .mb-4
+    = form.label :status, class: "block text-sm font-medium text-gray-700"
+    = form.select :status, Project.statuses.keys.map { |status| [status.humanize, status] }, {}, class: "mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
+
+  .actions
+    = form.submit 'Create Project', class: "inline-flex items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold text-white"

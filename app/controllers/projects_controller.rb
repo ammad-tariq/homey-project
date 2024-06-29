@@ -1,14 +1,19 @@
-# app/controllers/projects_controller.rb
 class ProjectsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_project, only: [:show, :update]
+  before_action :set_project, only: [:show, :edit, :update]
 
   def index
-    @projects = Project.all
+    @projects = Project.order(created_at: :asc) # Order by creation date
   end
 
   def show
     @comments = @project.comments.order(created_at: :asc)
+    @status_changes = @project.status_changes.order(created_at: :asc)
+    @conversation_history = (@comments + @status_changes).sort_by(&:created_at)
+  end
+
+  def new
+    @project = Project.new
   end
 
   def create
@@ -16,13 +21,23 @@ class ProjectsController < ApplicationController
     if @project.save
       redirect_to @project, notice: 'Project was successfully created.'
     else
-      render :index
+      render :new
     end
   end
 
+  def edit
+  end
+
   def update
-    @project.previous_status = @project.status
+    previous_status = @project.status_before_type_cast
     if @project.update(project_params)
+      new_status = @project.status_before_type_cast
+      StatusChange.create!(
+        project: @project,
+        user: current_user,
+        from_status: previous_status,
+        to_status: new_status
+      )
       redirect_to @project, notice: 'Project status was successfully updated.'
     else
       render :show

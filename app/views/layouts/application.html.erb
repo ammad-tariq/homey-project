@@ -4,10 +4,12 @@
     <title>Homey</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag 'application', media: 'all' %>
     <%= javascript_importmap_tags %>
   </head>
   <body class="flex flex-col min-h-screen">
+    <!-- Header -->
     <header class="bg-blue-900 text-white p-6">
       <div class="container mx-auto flex justify-between items-center">
         <%= link_to (user_signed_in? ? authenticated_root_path : unauthenticated_root_path), class: "font-semibold text-xl tracking-tight text-white" do %>
@@ -16,9 +18,8 @@
         <div class="flex items-center">
           <% if user_signed_in? %>
             <span class="mr-8 text-white font-bold text-lg">Welcome, <%= current_user.first_name %> <%= current_user.last_name %></span>
-            <%= link_to destroy_user_session_path, method: :delete, data: { turbo_method: :delete }, class: "inline-flex items-center bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" do %>
-              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-              Sign Out
+            <%= button_to destroy_user_session_path, method: :delete, data: { turbo: "true" }, class: "inline-flex items-center bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" do %>
+              <span>Sign Out</span>
             <% end %>
           <% else %>
             <%= link_to new_user_session_path, class: "inline-flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2" do %>
@@ -34,10 +35,12 @@
       </div>
     </header>
     
+    <!-- Main Content -->
     <main class="flex-grow container mx-auto px-4 mt-8">
       <%= yield %>
     </main>
     
+    <!-- Footer -->
     <footer class="bg-blue-900 text-white p-6 mt-8">
       <div class="container mx-auto text-center">
         <p>&copy; 2024 Homey</p>

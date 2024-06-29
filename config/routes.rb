@@ -1,8 +1,17 @@
-# config/routes.rb
 Rails.application.routes.draw do
   devise_for :users
-  resources :projects, only: [:index, :show, :create, :update] do
+  
+  authenticated :user do
+    root 'projects#index', as: :authenticated_root
+  end
+  
+  unauthenticated do
+    devise_scope :user do
+      root 'devise/sessions#new', as: :unauthenticated_root
+    end
+  end
+
+  resources :projects, only: [:index, :show, :new, :create, :update] do
     resources :comments, only: [:create]
   end
-  root "projects#index"
 end
