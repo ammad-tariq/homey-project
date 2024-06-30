@@ -1,9 +1,9 @@
 # db/seeds.rb
 
 # Create Users
-user1 = User.create!(email: 'ammad@example.com', password: 'password', first_name: 'Ammad', last_name: 'Tariq')
-user2 = User.create!(email: 'jane@example.com', password: 'password', first_name: 'Jane', last_name: 'Smith')
-user3 = User.create!(email: 'john@example.com', password: 'password', first_name: 'John', last_name: 'Doe')
+user1 = User.create!(email: 'ammad@example.com', password: 'Admin@123', first_name: 'Ammad', last_name: 'Tariq')
+user2 = User.create!(email: 'jane@example.com', password: 'Admin@123', first_name: 'Jane', last_name: 'Smith')
+user3 = User.create!(email: 'john@example.com', password: 'Admin@123', first_name: 'John', last_name: 'Doe')
 
 # Create Projects
 project1 = Project.create!(title: 'Project 1', status: :review, user: user1)
